@@ -1,11 +1,10 @@
 const express = require('express');
 const fs  = require('fs');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
 const data = fs.readFileSync('./database.json');
 
 let contacts = JSON.parse(data);
-
-console.log(contacts[0].firstname);
 
 
 const NewContact = (firstname,lastname,phone,email)=>{
@@ -15,7 +14,6 @@ const NewContact = (firstname,lastname,phone,email)=>{
     "phone":phone,
     "email":email
     }
-
     contacts.push(temp_contact_json);
     fs.writeFile('./database.json',JSON.stringify(contacts),(error)=>{
       console.log(error);
@@ -25,16 +23,24 @@ const NewContact = (firstname,lastname,phone,email)=>{
 
 //NewContact("robert","downey","9876545467","me@robert.com");
 
-console.log(contacts);
+//console.log(contacts);
 
 
 const app = express();
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-app.get("/contacts",(req,res)=>{
+app.get("/",(req,res)=>{
+  console.log("this is index");
+  res.sendFile('C:\\Users\\91742\\Documents\\Nodejs Trainings\\hello_world\\frontend\\index.html')
+})
 
-  res.send(contacts)
+let endpoint = "http://localhost:3004/contacts/All"
+
+
+app.get("/contacts/All",(req,res)=>{
+  console.log(req);
+  res.send("All Cntact")
 })
 
 app.post('/contacts',(req,res)=>{
